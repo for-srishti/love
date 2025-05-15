@@ -71,6 +71,35 @@ document.addEventListener('DOMContentLoaded', () => {
             0% { transform: translateY(100vh); opacity: 1; }
             100% { transform: translateY(-100vh); opacity: 0; }
         }
+
+        .success-image {
+            width: 300px;
+            height: 300px;
+            object-fit: cover;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+            margin-bottom: 1.5rem;
+            animation: fadeInScale 1s forwards;
+        }
+
+        .success-text {
+            font-family: 'Dancing Script', cursive;
+            font-size: 2.5rem;
+            color: var(--primary-color);
+            margin-top: 1rem;
+            animation: fadeInScale 1s forwards;
+        }
+
+        @keyframes fadeInScale {
+            from {
+                opacity: 0;
+                transform: scale(0.8);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
     `;
     document.head.appendChild(style);
 
@@ -78,53 +107,38 @@ document.addEventListener('DOMContentLoaded', () => {
     const noBtn = document.querySelector('.no-btn');
     
     function moveButton(button) {
-        // Get viewport dimensions
         const viewportWidth = window.innerWidth;
         const viewportHeight = window.innerHeight;
-        
-        // Get button dimensions
         const buttonWidth = button.offsetWidth;
         const buttonHeight = button.offsetHeight;
-        
-        // Calculate maximum positions
-        const maxX = viewportWidth - buttonWidth - 20; // -20 for safety margin
+        const maxX = viewportWidth - buttonWidth - 20;
         const maxY = viewportHeight - buttonHeight - 20;
-        
-        // Generate random position within viewport bounds
         const newX = Math.floor(Math.random() * maxX);
         const newY = Math.floor(Math.random() * maxY);
         
-        // Apply new position
         button.style.position = 'fixed';
-        button.style.transform = 'translate(0, 0)'; // Reset any existing transform
+        button.style.transform = 'translate(0, 0)';
         button.style.left = newX + 'px';
         button.style.top = newY + 'px';
-        button.style.zIndex = '9999'; // Ensure button stays on top
+        button.style.zIndex = '9999';
     }
 
-    // Move button on hover
     noBtn.addEventListener('mouseover', () => moveButton(noBtn));
-    // Also move button when mouse gets close
     noBtn.addEventListener('mousemove', (e) => {
         const rect = noBtn.getBoundingClientRect();
         const mouseX = e.clientX;
         const mouseY = e.clientY;
-        
-        // Calculate distance from mouse to button center
         const buttonCenterX = rect.left + rect.width / 2;
         const buttonCenterY = rect.top + rect.height / 2;
         const distance = Math.sqrt(
             Math.pow(mouseX - buttonCenterX, 2) + 
             Math.pow(mouseY - buttonCenterY, 2)
         );
-        
-        // Move if mouse is within 100px of button
         if (distance < 100) {
             moveButton(noBtn);
         }
     });
 
-    // Prevent the button from getting stuck at edges
     window.addEventListener('resize', () => {
         if (noBtn.style.position === 'fixed') {
             moveButton(noBtn);
@@ -136,16 +150,34 @@ document.addEventListener('DOMContentLoaded', () => {
         const proposalSection = document.querySelector('.proposal-section');
         const buttons = document.querySelector('.proposal-buttons');
         
-        // Create success message
-        const successMsg = document.createElement('div');
-        successMsg.className = 'proposal-success';
-        successMsg.innerHTML = '❤️ You\'ve made me the happiest person! ❤️';
+        // Create success content
+        const successContent = document.createElement('div');
+        successContent.className = 'proposal-success';
         
-        // Replace buttons with success message
+        // Add cute cat image
+        const catImage = document.createElement('img');
+        catImage.src = 'cutecat.jpg';
+        catImage.alt = 'Cute Cat';
+        catImage.className = 'success-image';
+        
+        // Add text
+        const text = document.createElement('h2');
+        text.textContent = 'My Kuchu Puchu';
+        text.className = 'success-text';
+        
+        // Add elements to success content
+        successContent.appendChild(catImage);
+        successContent.appendChild(text);
+        
+        // Replace buttons with success content
         buttons.style.display = 'none';
-        proposalSection.appendChild(successMsg);
-        successMsg.style.display = 'block';
-
+        proposalSection.appendChild(successContent);
+        
+        // Send email
+        const emailSubject = 'She said YES! 💖';
+        const emailBody = 'Congratulations! She clicked the Yes button! 🎉';
+        window.location.href = `mailto:aryanghadge811@gmail.com?subject=${encodeURIComponent(emailSubject)}&body=${encodeURIComponent(emailBody)}`;
+        
         // Create extra floating hearts
         for(let i = 0; i < 10; i++) {
             setTimeout(createHeart, i * 100);
