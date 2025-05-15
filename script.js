@@ -144,7 +144,36 @@ document.addEventListener('DOMContentLoaded', () => {
         "Almost there... to Yes! 💖"
     ];
     let messageIndex = 0;
-    let runAwayCount = 0;
+
+    function updateButtonText() {
+        noBtn.innerHTML = messages[messageIndex];
+        messageIndex = (messageIndex + 1) % messages.length;
+    }
+
+    function moveButton(event) {
+        // Get mouse/touch position
+        const mouseX = event.type.includes('touch') ? 
+            event.touches[0].clientX : 
+            event.clientX;
+        const mouseY = event.type.includes('touch') ? 
+            event.touches[0].clientY : 
+            event.clientY;
+
+        const newPos = getRandomPosition(noBtn, mouseX, mouseY);
+        
+        // Add some fun animations
+        noBtn.style.transition = 'all 0.3s ease';
+        noBtn.style.position = 'fixed';
+        noBtn.style.left = newPos.x + 'px';
+        noBtn.style.top = newPos.y + 'px';
+        
+        // Change text every time
+        updateButtonText();
+
+        // Add some rotation for extra fun
+        const rotation = (Math.random() - 0.5) * 30;
+        noBtn.style.transform = `rotate(${rotation}deg)`;
+    }
 
     function getRandomPosition(element, mouseX, mouseY) {
         const viewportWidth = window.innerWidth;
@@ -177,39 +206,8 @@ document.addEventListener('DOMContentLoaded', () => {
         return { x: newX, y: newY };
     }
 
-    function updateButtonText() {
-        noBtn.textContent = messages[messageIndex];
-        messageIndex = (messageIndex + 1) % messages.length;
-    }
-
-    function moveButton(event) {
-        runAwayCount++;
-        
-        // Get mouse/touch position
-        const mouseX = event.type.includes('touch') ? 
-            event.touches[0].clientX : 
-            event.clientX;
-        const mouseY = event.type.includes('touch') ? 
-            event.touches[0].clientY : 
-            event.clientY;
-
-        const newPos = getRandomPosition(noBtn, mouseX, mouseY);
-        
-        // Add some fun animations
-        noBtn.style.transition = 'all 0.3s ease';
-        noBtn.style.position = 'fixed';
-        noBtn.style.left = newPos.x + 'px';
-        noBtn.style.top = newPos.y + 'px';
-        
-        // Change text after a few attempts
-        if (runAwayCount % 2 === 0) {
-            updateButtonText();
-        }
-
-        // Add some rotation for extra fun
-        const rotation = (Math.random() - 0.5) * 30;
-        noBtn.style.transform = `rotate(${rotation}deg)`;
-    }
+    // Initialize first message
+    updateButtonText();
 
     // Handle both mouse and touch events
     noBtn.addEventListener('mouseover', moveButton);
