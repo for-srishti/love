@@ -167,7 +167,7 @@ document.addEventListener('DOMContentLoaded', () => {
         noBtn.style.left = newPos.x + 'px';
         noBtn.style.top = newPos.y + 'px';
         
-        // Change text every time
+        // Change text every time after first interaction
         updateButtonText();
 
         // Add some rotation for extra fun
@@ -205,9 +205,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
         return { x: newX, y: newY };
     }
-
-    // Initialize first message
-    updateButtonText();
 
     // Handle both mouse and touch events
     noBtn.addEventListener('mouseover', moveButton);
