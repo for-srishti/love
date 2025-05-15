@@ -103,6 +103,35 @@ document.addEventListener('DOMContentLoaded', () => {
     `;
     document.head.appendChild(style);
 
+    // Music control setup
+    const musicToggle = document.getElementById('musicToggle');
+    const bgMusic = document.getElementById('bgMusic');
+    let isMusicPlaying = false;
+
+    musicToggle.addEventListener('click', () => {
+        if (isMusicPlaying) {
+            bgMusic.pause();
+            musicToggle.classList.remove('playing');
+        } else {
+            bgMusic.play();
+            musicToggle.classList.add('playing');
+        }
+        isMusicPlaying = !isMusicPlaying;
+    });
+
+    // Try to autoplay music (might be blocked by browser)
+    bgMusic.volume = 0.4; // Set volume to 40%
+    const playPromise = bgMusic.play();
+    if (playPromise !== undefined) {
+        playPromise.then(() => {
+            isMusicPlaying = true;
+            musicToggle.classList.add('playing');
+        }).catch(() => {
+            // Autoplay was prevented
+            isMusicPlaying = false;
+        });
+    }
+
     // Add the no button movement functionality
     const noBtn = document.querySelector('.no-btn');
     
