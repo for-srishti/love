@@ -159,4 +159,62 @@ footer {
     .gallery-grid {
         grid-template-columns: 1fr;
     }
+}
+
+.proposal-section {
+    text-align: center;
+    margin: 2rem 0 4rem;
+    padding: 2rem;
+    background: white;
+    border-radius: 15px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.proposal-question {
+    font-family: 'Dancing Script', cursive;
+    font-size: 2.5rem;
+    color: var(--primary-color);
+    margin-bottom: 2rem;
+}
+
+.proposal-buttons {
+    display: flex;
+    gap: 2rem;
+    justify-content: center;
+    align-items: center;
+}
+
+.yes-btn, .no-btn {
+    padding: 1rem 3rem;
+    font-size: 1.2rem;
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: transform 0.3s ease, background-color 0.3s ease;
+    font-family: 'Poppins', sans-serif;
+}
+
+.yes-btn {
+    background-color: var(--primary-color);
+    color: white;
+}
+
+.yes-btn:hover {
+    transform: scale(1.1);
+    background-color: #ff8585;
+}
+
+.no-btn {
+    background-color: #e0e0e0;
+    color: #666;
+    position: relative;
+}
+
+.proposal-success {
+    display: none;
+    text-align: center;
+    margin-top: 2rem;
+    font-size: 1.5rem;
+    color: var(--primary-color);
+    animation: fadeIn 1s forwards;
 } 
