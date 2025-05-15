@@ -173,11 +173,6 @@ document.addEventListener('DOMContentLoaded', () => {
         buttons.style.display = 'none';
         proposalSection.appendChild(successContent);
         
-        // Send email
-        const emailSubject = 'She said YES! 💖';
-        const emailBody = 'Congratulations! She clicked the Yes button! 🎉';
-        window.location.href = `mailto:aryanghadge811@gmail.com?subject=${encodeURIComponent(emailSubject)}&body=${encodeURIComponent(emailBody)}`;
-        
         // Create extra floating hearts
         for(let i = 0; i < 10; i++) {
             setTimeout(createHeart, i * 100);

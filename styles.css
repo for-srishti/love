@@ -57,7 +57,7 @@ header {
 
 .message-card {
     background: white;
-    padding: 3rem;
+    padding: 3.5rem;
     border-radius: 15px;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
     transition: transform 0.3s ease;
@@ -71,8 +71,8 @@ header {
 .message-card h2 {
     font-family: 'Dancing Script', cursive;
     color: var(--primary-color);
-    margin-bottom: 2rem;
-    font-size: 2.8rem;
+    margin-bottom: 2.5rem;
+    font-size: 3rem;
     text-align: center;
     line-height: 1.2;
     text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.05);
@@ -81,17 +81,17 @@ header {
 .letter-content {
     font-family: 'Poppins', sans-serif;
     font-weight: 300;
-    font-size: 1.1rem;
-    line-height: 1.8;
-    color: #444;
+    font-size: 1.15rem;
+    line-height: 2;
+    color: #333;
     max-width: 800px;
     margin: 0 auto;
+    padding: 0 1.5rem;
 }
 
 .letter-content p {
-    margin-bottom: 1.8rem;
-    text-align: justify;
-    padding: 0 1rem;
+    margin-bottom: 2rem;
+    text-align: left;
     opacity: 0;
     animation: fadeInUp 0.8s forwards;
 }
@@ -198,6 +198,33 @@ footer {
     .gallery-grid {
         grid-template-columns: 1fr;
     }
+
+    .proposal-buttons {
+        flex-direction: column;
+        gap: 1.5rem;
+    }
+
+    .yes-btn, .no-btn {
+        width: 100%;
+        max-width: 300px;
+        padding: 1rem 2rem;
+        font-size: 1.2rem;
+    }
+
+    .letter-content {
+        font-size: 1.1rem;
+        line-height: 1.8;
+        padding: 0 1rem;
+    }
+
+    .message-card {
+        padding: 2rem;
+    }
+
+    .message-card h2 {
+        font-size: 2.5rem;
+        margin-bottom: 2rem;
+    }
 }
 
 .proposal-section {
@@ -245,6 +272,10 @@ footer {
     background: linear-gradient(45deg, #ff6b6b, #ff8585);
     color: white;
     border: 2px solid transparent;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    white-space: nowrap;
 }
 
 .yes-btn:hover {
@@ -332,23 +363,28 @@ footer {
 
 .header-content {
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: 4rem;
     padding: 2rem;
 }
 
 .title-section {
     text-align: center;
+    margin-bottom: 2rem;
 }
 
 .header-image {
-    flex-shrink: 0;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    margin: 1rem 0 3rem;
 }
 
 .couple-image {
-    width: 300px;
-    height: 300px;
+    width: 100%;
+    max-width: 800px;
+    height: auto;
     object-fit: cover;
     border-radius: 15px;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
@@ -361,12 +397,18 @@ footer {
 
 @media (max-width: 768px) {
     .header-content {
-        flex-direction: column;
-        gap: 2rem;
+        padding: 1rem;
     }
 
     .couple-image {
-        width: 250px;
-        height: 250px;
+        max-width: 100%;
+        border-radius: 10px;
     }
+}
+
+.button-heart {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin-left: 0.5rem;
 } 
