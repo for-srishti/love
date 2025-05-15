@@ -119,58 +119,112 @@ document.addEventListener('DOMContentLoaded', () => {
         isMusicPlaying = !isMusicPlaying;
     });
 
-    // Try to autoplay music (might be blocked by browser)
-    bgMusic.volume = 0.4; // Set volume to 40%
+    // Try to autoplay music
+    bgMusic.volume = 0.4;
     const playPromise = bgMusic.play();
     if (playPromise !== undefined) {
         playPromise.then(() => {
             isMusicPlaying = true;
             musicToggle.classList.add('playing');
         }).catch(() => {
-            // Autoplay was prevented
             isMusicPlaying = false;
         });
     }
 
-    // Add the no button movement functionality
+    // Fun No button interactions
     const noBtn = document.querySelector('.no-btn');
-    
-    function moveButton(button) {
+    const messages = [
+        "Nice try! 😏",
+        "Not happening! 💝",
+        "Try again! 😘",
+        "Nope! 🥰",
+        "Still no! 😊",
+        "Getting tired? 😅",
+        "Just click Yes! ❤️",
+        "Almost there... to Yes! 💖"
+    ];
+    let messageIndex = 0;
+    let runAwayCount = 0;
+
+    function getRandomPosition(element, mouseX, mouseY) {
         const viewportWidth = window.innerWidth;
         const viewportHeight = window.innerHeight;
-        const buttonWidth = button.offsetWidth;
-        const buttonHeight = button.offsetHeight;
-        const maxX = viewportWidth - buttonWidth - 20;
-        const maxY = viewportHeight - buttonHeight - 20;
-        const newX = Math.floor(Math.random() * maxX);
-        const newY = Math.floor(Math.random() * maxY);
-        
-        button.style.position = 'fixed';
-        button.style.transform = 'translate(0, 0)';
-        button.style.left = newX + 'px';
-        button.style.top = newY + 'px';
-        button.style.zIndex = '9999';
+        const buttonWidth = element.offsetWidth;
+        const buttonHeight = element.offsetHeight;
+
+        // Calculate the opposite direction from the mouse/touch
+        let newX, newY;
+        if (mouseX !== undefined && mouseY !== undefined) {
+            const centerX = viewportWidth / 2;
+            const centerY = viewportHeight / 2;
+            
+            // Move in the opposite direction of the mouse/touch
+            newX = mouseX > centerX ? 
+                Math.random() * (centerX - buttonWidth) : 
+                centerX + Math.random() * (centerX - buttonWidth);
+            newY = mouseY > centerY ? 
+                Math.random() * (centerY - buttonHeight) : 
+                centerY + Math.random() * (centerY - buttonHeight);
+        } else {
+            newX = Math.random() * (viewportWidth - buttonWidth);
+            newY = Math.random() * (viewportHeight - buttonHeight);
+        }
+
+        // Ensure button stays within viewport
+        newX = Math.min(Math.max(10, newX), viewportWidth - buttonWidth - 10);
+        newY = Math.min(Math.max(10, newY), viewportHeight - buttonHeight - 10);
+
+        return { x: newX, y: newY };
     }
 
-    noBtn.addEventListener('mouseover', () => moveButton(noBtn));
-    noBtn.addEventListener('mousemove', (e) => {
-        const rect = noBtn.getBoundingClientRect();
-        const mouseX = e.clientX;
-        const mouseY = e.clientY;
-        const buttonCenterX = rect.left + rect.width / 2;
-        const buttonCenterY = rect.top + rect.height / 2;
-        const distance = Math.sqrt(
-            Math.pow(mouseX - buttonCenterX, 2) + 
-            Math.pow(mouseY - buttonCenterY, 2)
-        );
-        if (distance < 100) {
-            moveButton(noBtn);
+    function updateButtonText() {
+        noBtn.textContent = messages[messageIndex];
+        messageIndex = (messageIndex + 1) % messages.length;
+    }
+
+    function moveButton(event) {
+        runAwayCount++;
+        
+        // Get mouse/touch position
+        const mouseX = event.type.includes('touch') ? 
+            event.touches[0].clientX : 
+            event.clientX;
+        const mouseY = event.type.includes('touch') ? 
+            event.touches[0].clientY : 
+            event.clientY;
+
+        const newPos = getRandomPosition(noBtn, mouseX, mouseY);
+        
+        // Add some fun animations
+        noBtn.style.transition = 'all 0.3s ease';
+        noBtn.style.position = 'fixed';
+        noBtn.style.left = newPos.x + 'px';
+        noBtn.style.top = newPos.y + 'px';
+        
+        // Change text after a few attempts
+        if (runAwayCount % 2 === 0) {
+            updateButtonText();
         }
+
+        // Add some rotation for extra fun
+        const rotation = (Math.random() - 0.5) * 30;
+        noBtn.style.transform = `rotate(${rotation}deg)`;
+    }
+
+    // Handle both mouse and touch events
+    noBtn.addEventListener('mouseover', moveButton);
+    noBtn.addEventListener('touchstart', moveButton);
+    noBtn.addEventListener('touchmove', (e) => {
+        e.preventDefault(); // Prevent scrolling while trying to touch the button
+        moveButton(e);
     });
 
+    // Reset position on window resize
     window.addEventListener('resize', () => {
         if (noBtn.style.position === 'fixed') {
-            moveButton(noBtn);
+            const newPos = getRandomPosition(noBtn);
+            noBtn.style.left = newPos.x + 'px';
+            noBtn.style.top = newPos.y + 'px';
         }
     });
 

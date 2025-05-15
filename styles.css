@@ -308,6 +308,11 @@ footer {
     border: 2px solid #e0e0e0;
     position: relative;
     z-index: 9999;
+    touch-action: none;
+    user-select: none;
+    -webkit-user-select: none;
+    transition: all 0.3s ease;
+    will-change: transform, left, top;
 }
 
 .no-btn:hover {
@@ -320,6 +325,13 @@ footer {
     0% { background-position: 0% 50%; }
     50% { background-position: 100% 50%; }
     100% { background-position: 0% 50%; }
+}
+
+@media (max-width: 768px) {
+    .no-btn {
+        padding: 1.2rem 2.5rem;
+        font-size: 1.2rem;
+    }
 }
 
 .proposal-success {
