@@ -76,24 +76,59 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Add the no button movement functionality
     const noBtn = document.querySelector('.no-btn');
-    const moveDistance = 100; // pixels to move
+    
+    function moveButton(button) {
+        // Get viewport dimensions
+        const viewportWidth = window.innerWidth;
+        const viewportHeight = window.innerHeight;
+        
+        // Get button dimensions
+        const buttonWidth = button.offsetWidth;
+        const buttonHeight = button.offsetHeight;
+        
+        // Calculate maximum positions
+        const maxX = viewportWidth - buttonWidth - 20; // -20 for safety margin
+        const maxY = viewportHeight - buttonHeight - 20;
+        
+        // Generate random position within viewport bounds
+        const newX = Math.floor(Math.random() * maxX);
+        const newY = Math.floor(Math.random() * maxY);
+        
+        // Apply new position
+        button.style.position = 'fixed';
+        button.style.transform = 'translate(0, 0)'; // Reset any existing transform
+        button.style.left = newX + 'px';
+        button.style.top = newY + 'px';
+        button.style.zIndex = '9999'; // Ensure button stays on top
+    }
 
-    noBtn.addEventListener('mouseover', (e) => {
-        const btnRect = noBtn.getBoundingClientRect();
-        const maxX = window.innerWidth - btnRect.width;
-        const maxY = window.innerHeight - btnRect.height;
+    // Move button on hover
+    noBtn.addEventListener('mouseover', () => moveButton(noBtn));
+    // Also move button when mouse gets close
+    noBtn.addEventListener('mousemove', (e) => {
+        const rect = noBtn.getBoundingClientRect();
+        const mouseX = e.clientX;
+        const mouseY = e.clientY;
+        
+        // Calculate distance from mouse to button center
+        const buttonCenterX = rect.left + rect.width / 2;
+        const buttonCenterY = rect.top + rect.height / 2;
+        const distance = Math.sqrt(
+            Math.pow(mouseX - buttonCenterX, 2) + 
+            Math.pow(mouseY - buttonCenterY, 2)
+        );
+        
+        // Move if mouse is within 100px of button
+        if (distance < 100) {
+            moveButton(noBtn);
+        }
+    });
 
-        // Generate random position
-        let newX = Math.random() * maxX;
-        let newY = Math.random() * maxY;
-
-        // Ensure button stays in viewport
-        newX = Math.min(Math.max(0, newX), maxX);
-        newY = Math.min(Math.max(0, newY), maxY);
-
-        noBtn.style.position = 'fixed';
-        noBtn.style.left = `${newX}px`;
-        noBtn.style.top = `${newY}px`;
+    // Prevent the button from getting stuck at edges
+    window.addEventListener('resize', () => {
+        if (noBtn.style.position === 'fixed') {
+            moveButton(noBtn);
+        }
     });
 
     // Handle the yes button click
